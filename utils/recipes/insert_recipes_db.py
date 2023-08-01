@@ -43,7 +43,8 @@ if __name__ == '__main__':
         author.save()
 
     # change images dir here.
-    COVER_IMAGES_DIR = DJANGO_BASE_DIR / 'media' / 'images_used'
+    COVER_IMAGES_DIR = DJANGO_BASE_DIR / 'media' / \
+        'recipes' / 'cover' / '2023' / '07' / '19'
 
     covers = os.listdir(COVER_IMAGES_DIR)
 

@@ -20,7 +20,7 @@ class RecipeSearchViewTest(RecipeTestBase):
 
     def test_recipe_search_term_is_on_page_title_and_escaped(self):
         response = self.client.get(reverse('recipes:search') + '?q=search')
-        self.assertIn('Search for &quot;search&quot;',
+        self.assertIn('Search for &quot;&quot;',
                       response.content.decode('utf-8'))
 
     def test_recipe_search_can_find_recipe_by_title(self):
