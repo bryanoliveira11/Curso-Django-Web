@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from os import environ
 from pathlib import Path
 
+from django.contrib.messages import constants
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -133,3 +134,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MESSAGE_TAGS = {
+    constants.DEBUG: 'message-debug',
+    constants.ERROR: 'message-error',
+    constants.SUCCESS: 'message-success',
+    constants.INFO: 'message-info',
+    constants.WARNING: 'message-warning',
+}
