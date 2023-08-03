@@ -359,6 +359,7 @@ h6 {
   display: flex;
   flex-flow: column nowrap;
   gap: calc(var(--spacing-gutter-medium) / 2);
+  max-width: 70rem;
 }
 
 .message {
