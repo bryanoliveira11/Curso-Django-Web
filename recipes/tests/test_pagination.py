@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from django.urls import reverse
 
-from utils.recipes.pagination import make_pagination_range
+from utils.pagination import make_pagination_range
 
 
 class PaginationTest(TestCase):

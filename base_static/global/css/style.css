@@ -317,6 +317,10 @@ h6 {
   margin-bottom: var(--spacing-gutter-medium);
 }
 
+.form-tag {
+  font-size: 2.1rem;
+}
+
 .form-content label,
 .form-content .help-text,
 .errorlist {
@@ -353,13 +357,26 @@ h6 {
   width: 100%;
 }
 
+.plaintext-button{
+  display: inline;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: 1.6rem;
+}
+
+.inline-form{
+  display: inline;
+}
+
 /*  messages */
 
 .messages-container {
   display: flex;
   flex-flow: column nowrap;
   gap: calc(var(--spacing-gutter-medium) / 2);
-  max-width: 65rem;
+  max-width: 70rem;
 }
 
 .message {
@@ -419,6 +436,7 @@ h6 {
 .m-y {
   margin: var(--spacing-gutter-medium) 0;
 }
+
 
 @media (max-width: 600px) {
   .main-content-list {

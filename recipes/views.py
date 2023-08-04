@@ -6,7 +6,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404, render
 from dotenv import load_dotenv
 
 from recipes.models import Recipe
-from utils.recipes.pagination import make_pagination
+from utils.pagination import make_pagination
 
 load_dotenv()
 
