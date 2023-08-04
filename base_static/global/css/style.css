@@ -38,8 +38,8 @@
   --font-primary: sans-serif;
   --font-headings: "Roboto Slab", serif;
 
-  --spacing-gutter-medium: 3rem;
-  --spacing-gutter-large: 4rem;
+  --spacing-gutter-medium: 2.5rem;
+  --spacing-gutter-large: 3.5rem;
 }
 
 * {
@@ -359,7 +359,7 @@ h6 {
   display: flex;
   flex-flow: column nowrap;
   gap: calc(var(--spacing-gutter-medium) / 2);
-  max-width: 70rem;
+  max-width: 65rem;
 }
 
 .message {

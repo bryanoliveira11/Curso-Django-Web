@@ -62,6 +62,7 @@ class RegisterForm(forms.ModelForm):
 
     email = forms.EmailField(
         label='E-mail',
+        help_text='The Email Must be Valid.',
         error_messages={'required': 'Write Your Email'})
 
     password = forms.CharField(
@@ -94,7 +95,18 @@ class RegisterForm(forms.ModelForm):
             'password',
         ]
 
-    def clean(self):
+    def clean_email(self):  # validating if email already exists in database
+        email = self.cleaned_data.get('email')
+        email_database = User.objects.filter(email=email).exists()
+
+        if email_database:
+            raise ValidationError(
+                'This Email is Already in Use.', code='invalid'
+            )
+
+        return email
+
+    def clean(self):  # validating passwords
         cleaned_data = super().clean()
         password = cleaned_data.get('password')
         password2 = cleaned_data.get('password2')
@@ -105,11 +117,3 @@ class RegisterForm(forms.ModelForm):
                 'password2': 'Passwords Must Be Equal'
             }, code='invalid'
             )
-
-        email = cleaned_data.get('email')
-        email_database = User.objects.filter(email=email).first()
-
-        if email_database:
-            raise ValidationError({
-                'email': 'This Email is Already in Use.'
-            })

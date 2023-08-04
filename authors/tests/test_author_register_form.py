@@ -36,7 +36,8 @@ class AuthorRegisterFormUnitTest(TestCase):
                       'one lowercase letter and one number. The length should be '
                       'at least 8 characteres.')),
         ('username', ('Username must have letters, numbers or one of those @.+-_'
-                      'The length must be between 4 and 150 characteres.'))
+                      'The length must be between 4 and 150 characteres.')),
+        ('email', ('The Email Must be Valid.'))
     ])
     def test_fields_help_text(self, field, help_text):
         form = RegisterForm()
@@ -145,3 +146,15 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:create')
         response = self.client.post(url)
         self.assertEqual(404, response.status_code)
+
+    def test_email_field_must_be_unique(self):
+        url = reverse('authors:create')
+        self.client.post(url, data=self.form_data, follow=True)
+
+        response = self.client.post(url, data=self.form_data, follow=True)
+
+        msg = 'This Email is Already in Use.'
+
+        self.assertIn(msg, response.context['form'].errors.get('email'))
+
+        self.assertIn(msg, response.content.decode('utf-8'))
