@@ -59,6 +59,14 @@ body {
   color: var(--color-dark-text);
 }
 
+img{
+  max-width: 100%;
+}
+
+a{
+  text-decoration: none;
+}
+
 h1,
 h2,
 h3,
@@ -336,7 +344,9 @@ h6 {
   color: var(--color-error-dark);
 }
 
-.form-content input {
+.form-content input,
+.form-content textarea,
+.form-content select {
   width: 100%;
   padding: 1rem;
   border-radius: 0.4rem;
@@ -368,8 +378,16 @@ h6 {
   font-size: 1.6rem;
 }
 
+.plaintext-button:hover{
+  color: var(--color-primary-dark);
+}
+
 .inline-form{
   display: inline;
+}
+
+.span-2{
+  grid-column: span 2;
 }
 
 /*  messages */
@@ -466,6 +484,8 @@ h6 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: calc(var(--spacing-gutter-medium) / 2);
+  align-items: center;
+  justify-content: center;
 }
 
 .authors-dashboard-container a{
@@ -489,6 +509,10 @@ h6 {
 
 .center {
   text-align: center;
+}
+
+.left {
+  text-align: left;
 }
 
 .m-x {

@@ -2,13 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import get_list_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from recipes.models import Recipe
 from utils.pagination import make_pagination
 
-from .forms import LoginForm, RegisterForm
+from .forms import AuthorRecipeForm, LoginForm, RegisterForm
 
 
 def register_view(request):
@@ -111,13 +111,31 @@ def dashboard(request):
 @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard_recipe_edit(request, id):
     recipe = Recipe.objects.filter(
-        author=request.user, is_published=False, pk=id
-    )
+        author=request.user, is_published=False, pk=id,
+    ).first()
 
     if not recipe:
         raise Http404()
 
+    form = AuthorRecipeForm(
+        data=request.POST or None,
+        files=request.FILES or None,
+        instance=recipe
+    )
+
+    if form.is_valid():
+        # valid form to save
+        form.save(commit=False)
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+        recipe.save()
+        messages.success(request, 'Recipe Saved Successfully !')
+
+        return redirect(reverse('authors:dashboard_recipe_edit', args=(id,)))
+
     return render(request, 'authors/pages/dashboard_recipe.html', context={
         'recipes': recipe,
-        'title': f'{recipe[0].title} - Edit',
+        'form': form,
+        'title': f'{recipe.title} - Edit',
     })
