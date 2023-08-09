@@ -120,7 +120,7 @@ def dashboard_recipe_edit(request, id):
     form = AuthorRecipeForm(
         data=request.POST or None,
         files=request.FILES or None,
-        instance=recipe
+        instance=recipe,
     )
 
     if form.is_valid():
