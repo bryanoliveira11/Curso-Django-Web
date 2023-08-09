@@ -1,0 +1,21 @@
+{% extends 'global/base.html' %}
+{% block title %} {{title}} | {% endblock title %}
+
+{% block content %}
+    <div class="main-content center container">
+        <h2 class="form-tag">Dashboard ({{user}}) - Your Recipes</h2>
+        {% include "authors/partials/login_message.html" %}
+
+        <div class="authors-dashboard-recipes-grid container">
+            {% for recipe in recipes  %}
+                {% include "authors/partials/user_recipes.html" %}
+            {% empty %}
+                <h3 class="form-tag container"> No Recipes Found 😞 </h3>
+            {% endfor %}
+        </div>
+
+    </div>
+    {% include "global/partials/messages.html" %}
+
+
+{% endblock content %}

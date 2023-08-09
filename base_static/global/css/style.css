@@ -292,6 +292,8 @@ h6 {
   display: flex;
   flex-flow: row wrap;
   gap: 1rem 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .pagination .page-item {
@@ -421,6 +423,66 @@ h6 {
   border: 1px solid var(--color-debug-dark);
   background: var(--color-debug-light);
   color: var(--color-debug-dark);
+}
+
+/* footer */
+
+.main-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  padding: var(--spacing-gutter-large);
+}
+
+.main-footer a {
+  color: var(--color-white);
+  text-decoration: none;
+  transition: all 300ms ease-in-out;
+}
+
+.main-footer a:hover {
+  filter: brightness(0.8);
+}
+
+/* authors */
+
+.login-message{
+  margin: 1rem 0;
+}
+
+.recipe-list-item.dashboard {
+  max-width: 30rem;
+  height: 40rem;
+}
+
+.authors-dashboard-container{
+  max-width: 64rem;
+  padding: var(--spacing-gutter-medium);
+}
+
+.authors-dashboard-recipes-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: calc(var(--spacing-gutter-medium) / 2);
+}
+
+.authors-dashboard-container a{
+  text-decoration: none;
+  color: var(--color-primary);
+  transition: all 100ms ease-in-out;
+}
+
+.authors-dashboard-container a:hover{
+  color: var(--color-primary-dark);
+}
+
+.authors-dashboard-container h3,
+.authors-dashboard-container p,
+.authors-dashboard-container ul{
+  list-style: none;
+  margin: 1rem 0;
 }
 
 /* generics */

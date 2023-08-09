@@ -10,8 +10,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = 'pk', 'title', 'slug', 'is_published',
+    list_display = 'id', 'title', 'author', 'created_at', 'slug', 'is_published',
     list_editable = 'is_published',
-    list_display_links = 'title',
+    list_display_links = 'title', 'created_at',
+    list_filter = 'category', 'author', 'is_published', 'preparation_steps_is_html',
+    search_fields = 'id', 'title', 'description', 'preparation_steps',
     ordering = '-pk',
-    list_per_page = 50
+    list_per_page = 10
+    prepopulated_fields = {
+        'slug': ('title',)
+    }
