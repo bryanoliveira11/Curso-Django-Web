@@ -15,12 +15,12 @@
 
         {% for page in pagination_range.pagination %}
         {% if pagination_range.current_page == page %}
-        <a href="?page={{ page }}{{ additional_url_query }}" aria-label="Current page {{page}}" aria-current="true"
-            class="page-link page-item page-current">
-            {{ page }}
-        </a>
+            <a href="?page={{ page }}{{ additional_url_query }}" aria-label="Current page {{page}}" aria-current="true"
+                class="page-link page-item page-current">
+                {{ page }}
+            </a>
         {% else %}
-        <a href="?page={{ page }}{{ additional_url_query }}" aria-label="Go to page {{page}}"
+        <a href="?page={{page}}{{ additional_url_query }}" aria-label="Go to page {{page}}"
             class="page-link page-item">
             {{ page }}
         </a>

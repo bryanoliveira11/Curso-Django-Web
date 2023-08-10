@@ -99,7 +99,7 @@ def dashboard(request):
         author=request.user, is_published=False
     ).order_by('-id')
 
-    page_obj, pagination_range = make_pagination(request, recipes, per_page=4)
+    page_obj, pagination_range = make_pagination(request, recipes, per_page=3)
 
     return render(request, 'authors/pages/dashboard.html', context={
         'recipes': page_obj,
