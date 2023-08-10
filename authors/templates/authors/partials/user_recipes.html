@@ -1,7 +1,7 @@
 {% load filters %}
 <div class="recipe recipe-list-item dashboard">
     {% if recipe.cover %}
-        <div class="recipe-cover">
+        <div class="recipe-cover dashboard">
             <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">
                 <img src="{{ recipe.cover.url }}" alt="temp">
             </a>
@@ -11,7 +11,7 @@
     <div class="recipe-title-container dashboard">
         <h2 class="recipe-title">
                 <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">
-                    {{ recipe.title }}
+                    {{ recipe.title }} - (not published)
                 </a>
         </h2>
     </div>
@@ -48,7 +48,15 @@
     </div>
 
     <div class="recipe-delete dashboard">
-        <i class="fa-solid fa-xmark"></i>
+        <form action="{% url 'authors:dashboard_recipe_delete' recipe.id %}"
+            method="POST"
+            class="inline-form form-delete">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{recipe.id}}">
+            <button class="plaintext-button delete" type="submit">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </form>
     </div>
 
 </div>

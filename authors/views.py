@@ -101,8 +101,6 @@ def dashboard(request):
 
     page_obj, pagination_range = make_pagination(request, recipes, per_page=4)
 
-    print(page_obj, pagination_range)
-
     return render(request, 'authors/pages/dashboard.html', context={
         'recipes': page_obj,
         'title': 'Dashboard',
@@ -168,3 +166,23 @@ def dashboard_recipe_new(request):
         'title': 'Create Your Recipe',
         'form_title': 'Create Your Recipe',
     })
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_delete(request, id):
+    if not request.POST:
+        raise Http404()
+
+    POST = request.POST
+    id = POST.get('id')
+
+    recipe = Recipe.objects.filter(
+        author=request.user, is_published=False, pk=id,
+    ).first()
+
+    if not recipe:
+        raise Http404()
+
+    recipe.delete()
+    messages.success(request, 'Recipe Deleted Successfully.')
+    return redirect(reverse('authors:dashboard'))

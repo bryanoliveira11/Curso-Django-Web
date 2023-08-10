@@ -1,6 +1,13 @@
 {% if recipes.has_other_pages %}
 <nav role="nagination" aria-label="Pagination" class="container pagination">
     <div class="pagination-content">
+
+        {% if recipes.has_previous %}
+            <a class="pagination-arrow" href="?page={{recipes.previous_page_number }}">
+              <i class="fa-solid fa-angle-left"></i>
+            </a>
+        {% endif %}
+
         {% if pagination_range.first_page_out_of_range %}
             <a href="?page=1{{ additional_url_query }}" aria-label="Go to page 1" class="page-link page-item"> 1 </a>
             <span class="page-item">...</span>
@@ -25,6 +32,12 @@
             <a href="?page={{ pagination_range.total_pages }}{{ additional_url_query }}"
                 aria-label="Go to Last page {{pagination_range.total_pages}}" class="page-link page-item">
                 {{ pagination_range.total_pages }}
+            </a>
+        {% endif %}
+    
+        {% if recipes.has_next %}
+            <a class="pagination-arrow" href="?page={{ recipes.next_page_number }}">
+              <i class="fa-solid fa-angle-right"></i>
             </a>
         {% endif %}
 
