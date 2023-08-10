@@ -1,5 +1,4 @@
 {% load filters %}
-
 <div class="recipe recipe-list-item dashboard">
     {% if recipe.cover %}
         <div class="recipe-cover">
@@ -9,15 +8,11 @@
         </div>
     {% endif %}
 
-    <div class="recipe-title-container">
+    <div class="recipe-title-container dashboard">
         <h2 class="recipe-title">
-            {% if is_detail_page is True %}
-                {{ recipe.title }}
-            {% else %}
                 <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">
                     {{ recipe.title }}
                 </a>
-            {% endif %}
         </h2>
     </div>
 
@@ -48,17 +43,12 @@
         {% endif %}
     </div>
 
-    <div class="recipe-content">
+    <div class="recipe-content dashboard">
         <p> {{ recipe.description|description_text }} </p>
     </div>
 
-    {% if is_detail_page is True %}
-        <div class="preparation-steps">
-            {% if recipe.preparation_steps_is_html is True %} 
-                {{ recipe.preparation_steps|safe }} 
-            {% else %}
-                <p class="center"> {{ recipe.preparation_steps|linebreaksbr }} </p>
-            {% endif %}
-        </div>
-    {% endif %}
+    <div class="recipe-delete dashboard">
+        <i class="fa-solid fa-xmark"></i>
+    </div>
+
 </div>

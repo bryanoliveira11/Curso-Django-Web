@@ -3,8 +3,15 @@
 <div class="login-message center"> 
   You are Logged in as
   {{ request.user.username }}.
-  <a href="{% url 'authors:dashboard' %}" class="plaintext-button" type="submit"> See your recipes </a> or
-  <form class="inline-form" action="{% url 'authors:logout' %}" method="POST">
+  <a href="{% url 'authors:dashboard' %}" class="plaintext-button" type="submit">
+     See your recipes
+  </a> ,
+
+  <a href="{% url 'authors:dashboard_recipe_new' %}" class="plaintext-button">
+    Create a new Recipe
+  </a>
+  or
+  <form class="inline-form" action="{% url 'authors:logout' %}" method="POST"> 
     {% csrf_token %}
     <input type="hidden" name="username" value="{{ request.user.username }}">
     <button class="plaintext-button" type="submit"> Click here </button>

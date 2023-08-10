@@ -1,5 +1,9 @@
+import string
+from secrets import SystemRandom
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
 
 
 class Category(models.Model):
@@ -32,6 +36,13 @@ class Recipe(models.Model):
         Category, on_delete=models.SET_NULL, null=True, blank=True)
     author = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.title)}-{"".join(SystemRandom().choices(string.ascii_letters, k=5))}'
+            self.slug = slug
+
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title

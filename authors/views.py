@@ -101,6 +101,8 @@ def dashboard(request):
 
     page_obj, pagination_range = make_pagination(request, recipes, per_page=4)
 
+    print(page_obj, pagination_range)
+
     return render(request, 'authors/pages/dashboard.html', context={
         'recipes': page_obj,
         'title': 'Dashboard',
@@ -138,4 +140,31 @@ def dashboard_recipe_edit(request, id):
         'recipes': recipe,
         'form': form,
         'title': f'{recipe.title} - Edit',
+        'form_title': f'Recipe Edit - {recipe.title}',
+    })
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_new(request):
+    form = AuthorRecipeForm(
+        data=request.POST or None,
+        files=request.FILES or None,
+    )
+
+    if form.is_valid():
+        # valid form to save
+        recipe: Recipe = form.save(commit=False)
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+        recipe.save()
+        messages.success(request, 'Recipe Saved Successfully !')
+
+        return redirect(reverse('authors:dashboard_recipe_edit', args=(recipe.pk,)))
+
+    return render(request, 'authors/pages/dashboard_recipe.html', context={
+        'form': form,
+        'form_action': reverse('authors:dashboard_recipe_new'),
+        'title': 'Create Your Recipe',
+        'form_title': 'Create Your Recipe',
     })
