@@ -12,11 +12,11 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/recipe/new/',
-         views.dashboard_recipe_new,
+         views.DashboardRecipe.as_view(),
          name='dashboard_recipe_new'
          ),
     path('dashboard/recipe/<int:id>/edit/',
-         views.dashboard_recipe_edit,
+         views.DashboardRecipe.as_view(),
          name='dashboard_recipe_edit'
          ),
     path('dashboard/recipe/<int:id>/delete/',

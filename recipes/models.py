@@ -1,9 +1,9 @@
-import string
-from secrets import SystemRandom
-
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
+
+from utils.strings import generate_random_string
 
 
 class Category(models.Model):
@@ -22,9 +22,20 @@ class Recipe(models.Model):
     description = models.CharField(max_length=165)
     slug = models.SlugField(unique=True)
     preparation_time = models.IntegerField()
-    preparation_time_unit = models.CharField(max_length=65)
+    preparation_time_unit = models.CharField(
+        max_length=65, choices=(
+            ('Minutes', 'Minutes'),
+            ('Hours', 'Hours'),
+        )
+    )
     servings = models.IntegerField()
-    servings_unit = models.CharField(max_length=65)
+    servings_unit = models.CharField(
+        max_length=65, choices=(
+            ('Cups', 'Cups'),
+            ('Slices', 'Slices'),
+            ('Pieces', 'Pieces'),
+        )
+    )
     preparation_steps = models.TextField()
     preparation_steps_is_html = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -39,10 +50,13 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug = f'{slugify(self.title)}-{"".join(SystemRandom().choices(string.ascii_letters, k=5))}'
+            slug = f'{slugify(self.title)}-{"".join(generate_random_string(5))}'
             self.slug = slug
 
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
+
+    def get_absolute_url(self):  # will add a button to admin page
+        return reverse("recipes:recipe", args=(self.pk,))

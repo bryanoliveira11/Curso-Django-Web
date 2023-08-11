@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="main-content center container">
-        <h3 class="form-tag">{{form_title}}</h3>
+        <h3 class="form-tag">Dashboard ({{request.user}}) - Recipe</h3>
         {% include "authors/partials/login_message.html" %}
         {% include "global/partials/messages.html" %}
         <div class="left">
