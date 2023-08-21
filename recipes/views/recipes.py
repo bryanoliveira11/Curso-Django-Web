@@ -2,7 +2,6 @@ from os import environ
 from typing import Any, Dict
 
 from django.db.models import Q
-from django.db.models.query import QuerySet
 from django.http import Http404
 from django.views.generic import ListView
 from dotenv import load_dotenv
@@ -38,6 +37,7 @@ class RecipeListViewBase(ListView):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(is_published=True)
+
         return qs
 
 
@@ -51,13 +51,16 @@ class RecipeListViewCategory(RecipeListViewBase):
         qs = qs.filter(
             category__id=self.kwargs.get('category_pk'), is_published=True
         )
+
+        if not qs:
+            raise Http404()
+
         return qs
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         ctx = super().get_context_data(**kwargs)
-        print(ctx)
         ctx.update({
-            'title': f'{ctx.get("object_list")[0].category} '  # type:ignore
+            'title': f'{ctx.get("recipes")[0].category.name} '  # type:ignore
             '- Category'
         })
         return ctx
@@ -75,6 +78,9 @@ class RecipeListViewSearch(RecipeListViewBase):
 
         self.search_term = self.request.GET.get('q', '').strip()
 
+        if not self.search_term:
+            raise Http404()
+
         qs = qs.filter(
             Q(
                 Q(title__icontains=self.search_term) |
@@ -82,6 +88,7 @@ class RecipeListViewSearch(RecipeListViewBase):
             ),
             is_published=True
         )
+
         return qs
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:

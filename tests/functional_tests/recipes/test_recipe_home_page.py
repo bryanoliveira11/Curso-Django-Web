@@ -38,7 +38,7 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
             self.browser.find_element(By.CLASS_NAME, 'main-content-list').text
         )
 
-    @patch('recipes.views.PER_PAGE', new=1)  # 1 recipe per page
+    @patch('recipes.views.recipes.PER_PAGE', new=1)  # 1 recipe per page
     def test_recipe_home_page_pagination(self):
         self.make_multiple_recipes(number_of_recipes=2)  # two recipes created
 

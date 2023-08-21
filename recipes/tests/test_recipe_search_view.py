@@ -8,7 +8,7 @@ from .test_recipe_base import RecipeTestBase
 class RecipeSearchViewTest(RecipeTestBase):
     def test_recipe_search_uses_correct_view_function(self):
         resolved = resolve(reverse('recipes:search'))
-        self.assertIs(resolved.func, views.search)
+        self.assertIs(resolved.func.view_class, views.RecipeListViewSearch)
 
     def test_recipe_search_loads_correct_template(self):
         response = self.client.get(reverse('recipes:search') + '?q=search')
@@ -20,7 +20,7 @@ class RecipeSearchViewTest(RecipeTestBase):
 
     def test_recipe_search_term_is_on_page_title_and_escaped(self):
         response = self.client.get(reverse('recipes:search') + '?q=search')
-        self.assertIn('Search for &quot;&quot;',
+        self.assertIn('Search for &quot;search&quot',
                       response.content.decode('utf-8'))
 
     def test_recipe_search_can_find_recipe_by_title(self):
