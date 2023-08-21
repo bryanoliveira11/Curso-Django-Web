@@ -1,16 +1,25 @@
+from typing import Any
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from authors.forms.recipe_form import AuthorRecipeForm
 from recipes.models import Recipe
 
 
-# @login_required(login_url='authors:login', redirect_field_name='next')
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
+)
 class DashboardRecipe(View):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
     def get_recipe(self, id=None):  # get a recipe method
         recipe = None
 
