@@ -68,3 +68,15 @@ class DashboardRecipe(View):
             )
 
         return self.render_recipe(form=form)
+
+
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
+)
+class DashboardRecipeDelete(DashboardRecipe):
+    def post(self, *args, **kwargs):
+        recipe = self.get_recipe(self.request.POST.get('id'))
+        recipe.delete()  # type:ignore
+        messages.success(self.request, 'Recipe Deleted Successfully.')
+        return redirect(reverse('authors:dashboard'))
