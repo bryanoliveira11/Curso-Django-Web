@@ -1,7 +1,6 @@
 from os import environ
 from typing import Any, Dict
 
-from django.db import models
 from django.db.models import Q
 from django.http import Http404
 from django.views.generic import DetailView, ListView
