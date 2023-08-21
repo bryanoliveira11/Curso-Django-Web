@@ -1,9 +1,10 @@
 from os import environ
 from typing import Any, Dict
 
+from django.db import models
 from django.db.models import Q
 from django.http import Http404
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from dotenv import load_dotenv
 
 from recipes.models import Recipe
@@ -20,8 +21,8 @@ class RecipeListViewBase(ListView):
     template_name = 'recipes/pages/home.html'
     ordering = ['-id']
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        ctx = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
 
         page_obj, pagination_range = make_pagination(
             self.request, ctx.get('recipes'), PER_PAGE
@@ -57,8 +58,8 @@ class RecipeListViewCategory(RecipeListViewBase):
 
         return qs
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        ctx = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
         ctx.update({
             'title': f'{ctx.get("recipes")[0].category.name} '  # type:ignore
             '- Category'
@@ -91,13 +92,33 @@ class RecipeListViewSearch(RecipeListViewBase):
 
         return qs
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        ctx = super().get_context_data(**kwargs)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
 
         ctx.update({
             'title': f'Search for "{self.search_term}"',
             'search_term': self.search_term,
             'additional_url_query': f'&q={self.search_term}'
+        })
+
+        return ctx
+
+
+class RecipeDetailView(DetailView):
+    model = Recipe
+    context_object_name = 'recipe'
+    template_name = 'recipes/pages/recipe-view.html'
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(is_published=True)
+        return qs
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
+
+        ctx.update({
+            'is_detail_page': True,
         })
 
         return ctx
