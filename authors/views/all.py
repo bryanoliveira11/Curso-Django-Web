@@ -1,13 +1,21 @@
+from os import environ
+from typing import Any, Dict
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models.query import QuerySet
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 from authors.forms import LoginForm, RegisterForm
 from recipes.models import Recipe
 from utils.pagination import make_pagination
+
+PER_PAGE = int(environ.get('PER_PAGE_DASHBOARD', 3))
 
 
 def register_view(request):
@@ -92,16 +100,34 @@ def logout_view(request):
     return redirect(reverse('authors:login'))
 
 
-@login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard(request):
-    recipes = Recipe.objects.filter(
-        author=request.user, is_published=False
-    ).order_by('-id')
+@method_decorator(
+    login_required(login_url='authors:login', redirect_field_name='next'),
+    name='dispatch'
+)
+class Dashboard(ListView):
+    model = Recipe
+    context_object_name = 'user_recipes'
+    template_name = 'authors/pages/dashboard.html'
+    ordering = ['-id']
 
-    page_obj, pagination_range = make_pagination(request, recipes, per_page=3)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        ctx = super().get_context_data(*args, **kwargs)
 
-    return render(request, 'authors/pages/dashboard.html', context={
-        'recipes': page_obj,
-        'title': 'Dashboard',
-        'pagination_range': pagination_range,
-    })
+        page_obj, pagination_range = make_pagination(
+            self.request, ctx.get('user_recipes'), PER_PAGE
+        )
+
+        ctx.update({
+            'recipes': page_obj,
+            'title': 'Dashboard',
+            'pagination_range': pagination_range
+        })
+
+        return ctx
+
+    def get_queryset(self, *args, **kwargs) -> QuerySet[Any]:
+        qs = super().get_queryset(*args, **kwargs)
+        qs = qs.filter(author=self.request.user, is_published=False)
+        qs = qs.select_related('author', 'category')
+
+        return qs
