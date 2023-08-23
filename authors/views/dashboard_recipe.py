@@ -49,9 +49,9 @@ class DashboardRecipe(View):
         recipe = self.get_recipe(id)
 
         form = AuthorRecipeForm(
-            data=request.POST or None,
-            files=request.FILES or None,
-            instance=recipe,
+            data=self.request.POST or None,
+            files=self.request.FILES or None,
+            instance=recipe
         )
 
         if form.is_valid():
