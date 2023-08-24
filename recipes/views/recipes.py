@@ -1,10 +1,11 @@
 from os import environ
 from typing import Any, Dict
 
-from django import http
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
 from dotenv import load_dotenv
 
@@ -14,6 +15,24 @@ from utils.pagination import make_pagination
 load_dotenv()
 
 PER_PAGE = int(environ.get('PER_PAGE', 9))
+
+
+def theory(request, *args, **kwargs):
+    # recipes = Recipe.objects.all()
+    # recipes = recipes.filter(title__icontains='Created').order_by('-id').last()
+    # recipes = Recipe.objects.get(id=1)
+
+    try:
+        recipes = Recipe.objects.get(id=1000)
+    except ObjectDoesNotExist:
+        recipes = None
+
+    context = {
+        'recipes': recipes
+    }
+
+    return render(
+        request, 'recipes/pages/theory.html', context=context)
 
 
 class RecipeListViewBase(ListView):
