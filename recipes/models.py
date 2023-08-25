@@ -60,10 +60,10 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            slug = f'{slugify(self.title)}-{"".join(generate_random_string(5))}'
+            slug = f'{slugify(self.title)}{generate_random_string(length=5)}'
             self.slug = slug
 
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
