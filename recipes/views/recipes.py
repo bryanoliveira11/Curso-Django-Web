@@ -2,8 +2,9 @@ from os import environ
 from typing import Any, Dict
 
 # from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import F, Q
+from django.db.models import F, Q, Value
 from django.db.models.aggregates import Count
+from django.db.models.functions import Concat
 from django.forms.models import model_to_dict
 from django.http import Http404, JsonResponse
 from django.shortcuts import render
@@ -49,9 +50,22 @@ def theory(request, *args, **kwargs):
     # recipes = Recipe.objects.defer('is_published')
 
     # Count
-    recipes = Recipe.objects.values('id', 'title').filter(
-        title__icontains='rib'
-    )
+    # recipes = Recipe.objects.values('id', 'title').filter(
+    #     title__icontains='rib'
+    # )
+
+    # annotate, F and Value classes
+    # recipes = Recipe.objects.all().annotate(
+    #     author_full_name=Concat(
+    #         F('author__first_name'), Value(' '),
+    #         F('author__last_name'), Value(' ('),
+    #         F('author__username'), Value(')'),)
+    # ).select_related('author')
+
+    # using a manager method from the models.py
+    recipes = Recipe.objects.get_published().select_related('author')
+
+    # using Count
     number_of_recipes = recipes.aggregate(number=Count('id'))
 
     context = {

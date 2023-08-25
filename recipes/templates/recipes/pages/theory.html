@@ -11,8 +11,8 @@
         <p>Number of Recipes : {{number_of_recipes}}</p>
         {% for recipe in recipes %}
             <li>
-               {{recipe.id}} - {{recipe.title}}
-                | {{recipe.author.id}} - {{recipe.author__username}}</li>
+               {{recipe.id}} - {{recipe.title}} - {{recipe.is_published}}
+                | {{recipe.author.id}} - {{recipe.author.username}}</li>
         {% empty %}
             <p> no recipes </p>
         {% endfor %}

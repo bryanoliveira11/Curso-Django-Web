@@ -16,7 +16,7 @@ class AuthorRecipeForm(forms.ModelForm):
 
         add_attr(self.fields.get('preparation_steps'), 'class', 'span-2')
 
-    cover = forms.CharField(
+    cover = forms.FileField(
         widget=forms.FileInput(
             attrs={
                 'class': 'span-2'

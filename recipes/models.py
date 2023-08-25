@@ -17,7 +17,14 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 
+class RecipeManager(models.Manager):
+    def get_published(self):
+        ''' returns only published recipes '''
+        return self.filter(is_published=True)
+
+
 class Recipe(models.Model):
+    objects = RecipeManager()
     title = models.CharField(max_length=65)
     description = models.CharField(max_length=165)
     slug = models.SlugField(unique=True)
@@ -42,11 +49,14 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
     cover = models.ImageField(
-        upload_to='recipes/cover/%Y/%m/%d/', blank=True, default='')
+        upload_to='recipes/cover/%Y/%m/%d/', blank=True, default=''
+    )
     category = models.ForeignKey(
-        Category, on_delete=models.SET_NULL, null=True, blank=True)
+        Category, on_delete=models.SET_NULL, null=True, blank=True
+    )
     author = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
