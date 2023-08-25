@@ -24,3 +24,6 @@ class Tag(models.Model):
             self.slug = slug
 
         return super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.name
