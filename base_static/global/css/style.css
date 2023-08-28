@@ -561,6 +561,14 @@ h6 {
   margin: var(--spacing-gutter-medium) 0;
 }
 
+.tags-link a{
+  color: var(--color-primary);
+}
+
+.tags-link a:hover{
+  color: var(--color-primary-dark);
+}
+
 @media (max-width: 600px) {
   .main-content-list {
     display: grid;

@@ -89,7 +89,7 @@
             {% endif %}
 
             {% if recipe.tags.all %}
-                    <p>
+                    <p class='tags-link'>
                         Tags:
                         {% for tag in recipe.tags.all  %}
                             <a href="{% url 'recipes:tags' tag.slug %}">{{tag.name}}</a>, 

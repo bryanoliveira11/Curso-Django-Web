@@ -8,9 +8,11 @@ urlpatterns = [
     path('', views.RecipeListViewHome.as_view(), name='home'),
     path('recipes/search/', views.RecipeListViewSearch.as_view(), name='search'),
     path('recipes/tags/<slug:slug>',
-         views.RecipeListViewTag.as_view(), name='tags'),
+         views.RecipeListViewTag.as_view(), name='tags'
+         ),
     path('recipes/category/<int:category_pk>/',
-         views.RecipeListViewCategory.as_view(), name='category'),
+         views.RecipeListViewCategory.as_view(), name='category'
+         ),
     path('recipes/<int:pk>/',
          views.RecipeDetailView.as_view(), name='recipe'),
     path('recipes/api/v1/', views.RecipeListViewHomeApi.as_view(),
