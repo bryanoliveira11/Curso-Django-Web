@@ -1,4 +1,7 @@
+from collections import defaultdict
+
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -72,3 +75,19 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):  # will add a button to admin page
         return reverse("recipes:recipe", args=(self.pk,))
+
+    def clean(self, *args, **kwargs):
+        error_messages = defaultdict(list)
+
+        recipe_database = Recipe.objects.filter(
+            title__iexact=self.title
+        ).first()
+
+        if recipe_database:
+            if recipe_database.pk != self.pk:
+                error_messages['title'].append(
+                    'Found recipes with the same title'
+                )
+
+        if error_messages:
+            raise ValidationError(error_messages)
