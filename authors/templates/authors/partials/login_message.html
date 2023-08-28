@@ -11,11 +11,8 @@
     Create a new Recipe
   </a>
   or
-  <form class="inline-form" action="{% url 'authors:logout' %}" method="POST"> 
-    {% csrf_token %}
-    <input type="hidden" name="username" value="{{ request.user.username }}">
-    <button class="plaintext-button" type="submit"> Click here </button>
-  </form> to logout.
+  {% include "authors/partials/form_logout.html" %}
+  <a class="authors-logout-link plaintext-button" href="#">Click here</a> to logout.
 </div>
 
 {% endif %}
