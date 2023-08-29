@@ -10,8 +10,13 @@ class RecipeModelTest(RecipeTestBase):
         return super().setUp()
 
     def make_recipe_no_defaults(self):
+        title = ''
+
+        for i in range(3):
+            title = f'recipe title {i}'
+
         recipe = Recipe(
-            title='recipe title',
+            title=title,
             description='description',
             slug='recipe-slug-for-no-default',
             preparation_time=14,
