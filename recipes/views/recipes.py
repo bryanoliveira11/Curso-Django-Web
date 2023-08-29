@@ -3,6 +3,8 @@ from typing import Any, Dict
 
 from django.db.models import Q
 from django.http import Http404
+from django.utils import translation
+from django.utils.translation import gettext as _
 from django.views.generic import DetailView, ListView
 from dotenv import load_dotenv
 
@@ -27,10 +29,13 @@ class RecipeListViewBase(ListView):
         page_obj, pagination_range = make_pagination(
             self.request, ctx.get('recipes'), PER_PAGE
         )
+        html_language = translation.get_language()
+
         ctx.update({
             'recipes': page_obj,
             'pagination_range': pagination_range,
             'title': 'Home',
+            'html_language': html_language,
         })
 
         return ctx
@@ -62,9 +67,11 @@ class RecipeListViewCategory(RecipeListViewBase):
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         ctx = super().get_context_data(*args, **kwargs)
+        category_translation = _('Category')
+
         ctx.update({
             'title': f'{ctx.get("recipes")[0].category.name} '  # type:ignore
-            '- Category'
+            f'- {category_translation}'
         })
         return ctx
 

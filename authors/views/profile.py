@@ -18,4 +18,5 @@ class ProfileView(TemplateView):
         return self.render_to_response({
             **context,
             'profile': profile,
+            'title': f"{profile.author.get_username()} Profile"
         })

@@ -1,10 +1,19 @@
-from math import ceil
+import math
 
 from django.core.paginator import Paginator
 
+# python -c
+# "import string as s;from random import SystemRandom as
+# sr;print(''.join(sr().choices(s.ascii_letters +
+# s.punctuation, k=64)))"
 
-def make_pagination_range(page_range, qty_pages, current_page):
-    middle_range = ceil(qty_pages / 2)
+
+def make_pagination_range(
+    page_range,
+    qty_pages,
+    current_page,
+):
+    middle_range = math.ceil(qty_pages / 2)
     start_range = current_page - middle_range
     stop_range = current_page + middle_range
     total_pages = len(page_range)
@@ -19,7 +28,6 @@ def make_pagination_range(page_range, qty_pages, current_page):
         start_range = start_range - abs(total_pages - stop_range)
 
     pagination = page_range[start_range:stop_range]
-
     return {
         'pagination': pagination,
         'page_range': page_range,
@@ -29,7 +37,7 @@ def make_pagination_range(page_range, qty_pages, current_page):
         'start_range': start_range,
         'stop_range': stop_range,
         'first_page_out_of_range': current_page > middle_range,
-        'last_page_out_of_range': stop_range < total_pages
+        'last_page_out_of_range': stop_range < total_pages,
     }
 
 
