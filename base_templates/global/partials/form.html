@@ -20,7 +20,7 @@
       {% for field in form %}
         <div class="form-group {{ field.field.widget.attrs.class }}">
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-              {{field}} 
+              {{field}}
 
           {% if field.help_text %}
               <p class="help-text">{{field.help_text}}</p>
@@ -38,6 +38,11 @@
       {% endfor %}
       
     </div>
+
+    <!-- <div class="showpassword">
+      <button class="plaintext-button" id="show-password">show password</button>
+    </div> -->
+
     <div class="form-content form-content-grid">
       <div class="form-group">
         <button type="submit">Send</button>
