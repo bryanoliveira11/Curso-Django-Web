@@ -28,7 +28,7 @@ class Category(models.Model):
 class RecipeManager(models.Manager):
     def get_published(self):
         ''' returns only published recipes '''
-        return self.filter(is_published=True)
+        return self.filter(is_published=True).order_by('-id')
 
 
 class Recipe(models.Model):
