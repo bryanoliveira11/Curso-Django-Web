@@ -23,5 +23,8 @@ urlpatterns = [
          ),
     path('recipes/api/v2/', views.recipe_api_list, name='api_v2'),
     path('recipes/api/v2/<int:pk>/', views.recipe_api_detail, name='api_v2_detail'),
+    path('recipes/api/v2/tag/<int:pk>/',
+         views.tag_api_detail, name='api_v2_tag'
+         ),
     path('recipes/theory/', views.theory, name='theory'),
 ]
