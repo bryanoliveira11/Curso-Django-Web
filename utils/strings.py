@@ -1,12 +1,11 @@
 import string
 from secrets import SystemRandom
-from typing import List
 
 
 def is_positive_number(value):
     try:
         number_string = float(value)
-    except:
+    except (ValueError, TypeError):
         return False
 
     return number_string > 0
