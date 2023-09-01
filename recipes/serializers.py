@@ -22,7 +22,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = [
             'id', 'title', 'description', 'author',
-            'category', 'tags', 'public', 'preparation',
+            'category', 'category_name', 'tags', 'public', 'preparation',
             'tag_objects', 'tag_links',
             'preparation_time', 'preparation_time_unit', 'servings',
             'servings_unit',
@@ -34,7 +34,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     preparation = serializers.SerializerMethodField(read_only=True)
     # field that references a method
 
-    category = serializers.StringRelatedField(read_only=True)
+    category_name = serializers.StringRelatedField(
+        read_only=True, source='category')
 
     # uses the TagSerializer to get all the tag info
     tag_objects = TagSerializer(

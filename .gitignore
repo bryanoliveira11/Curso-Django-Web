@@ -131,3 +131,4 @@ db copy.sqlite3
 static/
 /deploy
 .vscode
+utils/secret_key.py

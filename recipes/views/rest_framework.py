@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 #                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -21,6 +22,17 @@ class RecipeApiV2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_published()  # type:ignore
     serializer_class = RecipeSerializer
     pagination_class = RecipeApiV2Pagination
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        category_id = self.request.query_params.get(  # type:ignore
+            'category_id', ''
+        )
+        if category_id != '' and category_id.isnumeric():
+            qs = qs.filter(category_id=category_id)
+
+        return qs
 
 
 # class RecipeApiV2List(ListCreateAPIView):
