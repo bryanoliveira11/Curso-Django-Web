@@ -2,14 +2,16 @@ from django.shortcuts import get_object_or_404
 # from rest_framework.generics import (ListCreateAPIView,
 #                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework.status import HTTP_404_NOT_FOUND
+# from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
 from tag.models import Tag
 
 from ..models import Recipe
+from ..permissions import IsOwner
 from ..serializers import RecipeSerializer, TagSerializer
 
 
@@ -22,6 +24,7 @@ class RecipeApiV2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_published()  # type:ignore
     serializer_class = RecipeSerializer
     pagination_class = RecipeApiV2Pagination
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -33,6 +36,20 @@ class RecipeApiV2ViewSet(ModelViewSet):
             qs = qs.filter(category_id=category_id)
 
         return qs
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        obj = get_object_or_404(self.get_queryset(), pk=pk)
+
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+
+    def get_permissions(self):
+        if self.request.method in ['PATCH', 'DELETE']:
+            return [IsOwner(),]
+
+        return super().get_permissions()
 
 
 # class RecipeApiV2List(ListCreateAPIView):
@@ -65,9 +82,9 @@ class RecipeApiV2ViewSet(ModelViewSet):
 
 
 # class RecipeApiV2Detail(RetrieveUpdateDestroyAPIView):
-    queryset = Recipe.objects.get_published()  # type:ignore
-    serializer_class = RecipeSerializer
-    pagination_class = RecipeApiV2Pagination
+    # queryset = Recipe.objects.get_published()  # type:ignore
+    # serializer_class = RecipeSerializer
+    # pagination_class = RecipeApiV2Pagination
 
     # def get_recipe(self, pk):
     #     return get_object_or_404(

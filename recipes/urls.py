@@ -50,7 +50,6 @@ urlpatterns = [
         name='api_v2_tag'
     ),
     path('recipes/theory/', views.theory, name='theory'),
-
     path(
         'recipes/api/token/', TokenObtainPairView.as_view(),
         name='token_obtain_pair'
