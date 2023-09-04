@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 # from rest_framework.generics import (ListCreateAPIView,
 #                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-# from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
@@ -25,6 +25,7 @@ class RecipeApiV2ViewSet(ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = RecipeApiV2Pagination
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+    http_method_names = ['get', 'options', 'head', 'post', 'patch', 'delete']
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -36,6 +37,18 @@ class RecipeApiV2ViewSet(ModelViewSet):
             qs = qs.filter(category_id=category_id)
 
         return qs
+
+    def create(self, request, *args, **kwargs):  # POST
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(author=request.user)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers
+        )
 
     def get_object(self):
         pk = self.kwargs.get('pk')

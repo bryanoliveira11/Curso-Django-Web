@@ -1,8 +1,14 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import SimpleRouter
 
 from . import views
 
 app_name = 'authors'
+
+authors_api_v2_router = SimpleRouter()
+authors_api_v2_router.register(
+    'api', views.AuthorsApiV2ViewSet, basename='authors-api'
+)
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -27,4 +33,5 @@ urlpatterns = [
          views.ProfileView.as_view(),
          name='profile'
          ),
+    path('', include(authors_api_v2_router.urls))
 ]
